@@ -5,4 +5,3 @@
     Route::get('/{id}/edit', 'companyController@edit')->name('company.edit');
     Route::put('/{id}/update', 'companyController@update')->name('company.update');
     Route::delete('/{id}/remove', 'companyController@destroy')->name('company.remove');
-//    Route::resource( '/', 'companyController' );

@@ -1,6 +1,7 @@
 <?php
 
-use Illuminate\Http\Request;
+    use App\CompanyUsers;
+    use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,3 +17,6 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+    Route::get( '/company', function() { return CompanyUsers::all()->sortBy('id'); } );
+    Route::delete( '/company/remove/{id}', function( $id ) { return CompanyUsers::destroy( $id ); } );
