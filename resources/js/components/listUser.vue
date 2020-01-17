@@ -1,5 +1,13 @@
 <template>
-    <div class="row">
+    <div>
+        <div class="row">
+            <h3>List users</h3>
+        </div>
+
+        <div class="row">
+            <router-link :to="{name: 'createUser'}" class="btn btn-primary">Create</router-link>
+        </div>
+
         <table class="table">
             <thead>
                 <tr>
@@ -17,7 +25,7 @@
                     <td>{{ user.position }}</td>
                     <td>{{ user.birthday }}</td>
                     <td>
-                        <a v-bind:href="'/' + user.id + '/edit'" class="btn btn-xs">EDIT</a>
+                        <router-link :to="{name: 'editUser', params: {id: user.id}}" class="btn btn-xs btn-default">EDIT</router-link>
                         <a href="#" class="btn btn-xs btn-danger" v-on:click="deleteUser( user.id, index )">REMOVE</a>
                     </td>
                 </tr>
@@ -28,32 +36,49 @@
 
 <script>
     export default {
-        data: function () {
+        data: function ()
+        {
             return {
                 users: []
             }
         },
-        mounted() {
+        mounted()
+        {
             let app = this;
-            axios.get('/api/company')
-                .then(function (resp) {
-                    app.users = resp.data;
-                })
-                .catch(function (resp) {
-                    console.log(resp);
-                });
+            axios.get( '/api/company' )
+                .then(
+                    function ( resp )
+                    {
+                        app.users = resp.data;
+                    }
+                )
+                .catch(
+                    function ( resp )
+                    {
+                        console.log( resp );
+                    }
+                );
         },
         methods: {
-            deleteUser(id, index) {
-                if ( confirm("Вы действительно хотите удалить?") ) {
+            deleteUser( id, index )
+            {
+                if ( confirm( "Вы действительно хотите удалить?" ) )
+                {
                     let app = this;
-                    axios.delete('/api/company/remove/' + id)
-                        .then(function (resp) {
-                            app.users.splice(index, 1);
-                        })
-                        .catch(function (resp) {
-                            console.log(resp);
-                        });
+                    axios.delete( '/api/company/remove/' + id )
+                        .then(
+                            function ( resp )
+                            {
+                                console.log( app.users );
+                                app.users.splice( index, 1 );
+                            }
+                        )
+                        .catch(
+                            function ( resp )
+                            {
+                                console.log( resp );
+                            }
+                        );
                 }
             }
         }

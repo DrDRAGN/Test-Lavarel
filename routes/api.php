@@ -3,20 +3,18 @@
     use App\CompanyUsers;
     use Illuminate\Http\Request;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-|
-*/
+    Route::middleware( 'auth:api' )->get( '/user', function ( Request $request ) { return $request->user(); } );
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
-    Route::get( '/company', function() { return CompanyUsers::all()->sortBy('id'); } );
-    Route::delete( '/company/remove/{id}', function( $id ) { return CompanyUsers::destroy( $id ); } );
+    // Users company
+    Route::get( '/company', function () { return CompanyUsers::all()->sortBy( 'id' ); } );
+    Route::get( '/company/{id}', function ( $id ) { return CompanyUsers::find( $id ); } );
+    Route::put( '/company/create', function ( Request $request ) { return CompanyUsers::create( $request->all() ); } );
+    Route::put( '/company/update/{id}',
+        function ( Request $request, $id )
+        {
+            $user = CompanyUsers::find( $id );
+            $user->update( $request->all() );
+            return $user;
+        }
+    );
+    Route::delete( '/company/remove/{id}', function ( $id ) { return CompanyUsers::destroy( $id ); } );
